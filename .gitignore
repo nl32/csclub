@@ -5,6 +5,8 @@ node_modules
 .vercel
 .output
 
+/app/tailwind.css
+
 /build/
 /public/build
 /api/index.js
