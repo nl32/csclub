@@ -3,7 +3,7 @@ import { Link } from "@remix-run/react";
 export default function Index() {
   return (
     <div>
-      <div className="pl-2 flex flex-col bg-blue-500 h-screen w-screen justify-center items-center content-center text-center">
+      <div className="flex flex-col bg-blue-500 h-screen w-screen justify-center items-center content-center text-center">
         <div className="justify-self-start">
           <h1 className="py-5 text-transparent bg-clip-text text-9xl font-extrabold bg-gradient-to-br from-yellow-300 to-red-300">
             CS Club
