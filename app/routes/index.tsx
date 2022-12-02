@@ -1,6 +1,20 @@
-import { Link } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
+import { json } from "@remix-run/node";
+
+type link = {
+  href: string;
+  text: string;
+};
+
+export const loader = async () => {
+  const res = await fetch("https://api.npoint.io/0004c0fba9ef90581082");
+  const data = await res.json();
+  return json({ links: data as Array<link> });
+};
 
 export default function Index() {
+  const { links } = useLoaderData<typeof loader>();
+  console.log(links);
   return (
     <div>
       <div className="flex flex-col bg-blue-500 h-screen w-screen justify-center items-center content-center text-center">
@@ -11,19 +25,16 @@ export default function Index() {
         </div>
         <h2 className="text-yellow-500 text-2xl">Quick links</h2>
         <ul className="text-yellow-400">
-          <li className="text-lg hover:scale-125 transition ease-in-out">
-            <a href="https://drive.google.com/drive/folders/1QCT9rlajr4Uap754LJy_viF59__MlOVQ?usp=share_link">
-              Google Drive Folder
-            </a>
-          </li>
-          <li className="text-lg hover:scale-125 transition ease-in-out">
-            <a href="https://docs.google.com/spreadsheets/d/1FC8qnr5ursH3uul3To0HTgqsdixC3tvDvJVcaTaYhQI/edit?usp=share_link">
-              Competition signup
-            </a>
-          </li>
-          <li className="text-lg hover:scale-125 transition ease-in-out">
-            <a href="https://www.remind.com/join/mhs-csclub">Remind</a>
-          </li>
+          {links.map((link) => {
+            return (
+              <li
+                className="text-lg hover:scale-125 transition ease-in-out"
+                key={link.text}
+              >
+                <a href={link.href}>{link.text}</a>
+              </li>
+            );
+          })}
         </ul>
         <h2 className="text-2xl text-yellow-500">About</h2>
         <ul className="flex-row flex">
