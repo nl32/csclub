@@ -7,7 +7,7 @@ type link = {
 };
 
 export const loader = async () => {
-  const res = await fetch("https://api.npoint.io/0004c0fba9ef90581082");
+  const res = await fetch("https://api.npoint.io/d227c1ee9ad7db82d1c9");
   const data = await res.json();
   return json({ links: data as Array<link> });
 };
