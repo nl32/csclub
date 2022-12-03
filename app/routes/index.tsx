@@ -17,14 +17,14 @@ export default function Index() {
   console.log(links);
   return (
     <div>
-      <div className="flex flex-col bg-blue-500 h-screen w-screen justify-center items-center content-center text-center">
+      <div className="flex flex-col bg-blue-800 h-screen w-screen justify-center items-center content-center text-center">
         <div className="justify-self-start my-2">
           <h1 className="text-transparent bg-clip-text text-9xl font-extrabold bg-gradient-to-br from-yellow-300 to-red-300">
             CS Club
           </h1>
-          <h3 className="text-transparent bg-clip-text text-md font-extrabold bg-gradient-to-br from-yellow-300 to-red-300">
+          <h2 className="text-transparent bg-clip-text text-md font-extrabold bg-gradient-to-br from-yellow-300 to-red-300">
             At Mckinney High School
-          </h3>
+          </h2>
         </div>
         <div className="my-2 mb-1">
           <h2 className="text-yellow-500 text-2xl">Quick links</h2>
@@ -45,7 +45,7 @@ export default function Index() {
           <h2 className="text-2xl text-yellow-500">About</h2>
           <ul className="flex-row flex">
             <li className="p-1">
-              <Link to="/about">
+              <Link to="/about" aria-label="About Page">
                 <span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -61,7 +61,26 @@ export default function Index() {
               </Link>
             </li>
             <li className="p-1">
-              <a href="https://github.com/nl32/csclub">
+              <Link to="/officers" aria-label="List of Club Officers">
+                <span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    className="fill-black hover:fill-slate-800 scale-125 hover:scale-150 transition ease-in-out"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M8.25 6.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM15.75 9.75a3 3 0 116 0 3 3 0 01-6 0zM2.25 9.75a3 3 0 116 0 3 3 0 01-6 0zM6.31 15.117A6.745 6.745 0 0112 12a6.745 6.745 0 016.709 7.498.75.75 0 01-.372.568A12.696 12.696 0 0112 21.75c-2.305 0-4.47-.612-6.337-1.684a.75.75 0 01-.372-.568 6.787 6.787 0 011.019-4.38z"
+                      clipRule="evenodd"
+                    />
+                    <path d="M5.082 14.254a8.287 8.287 0 00-1.308 5.135 9.687 9.687 0 01-1.764-.44l-.115-.04a.563.563 0 01-.373-.487l-.01-.121a3.75 3.75 0 013.57-4.047zM20.226 19.389a8.287 8.287 0 00-1.308-5.135 3.75 3.75 0 013.57 4.047l-.01.121a.563.563 0 01-.373.486l-.115.04c-.567.2-1.156.349-1.764.441z" />
+                  </svg>
+                </span>
+              </Link>
+            </li>
+            <li className="p-1">
+              <a href="https://github.com/nl32/csclub" aria-label="Source Code">
                 <span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
