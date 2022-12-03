@@ -8,18 +8,17 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
-import styles from "./tailwind.css"
+import styles from "./tailwind.css";
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
   title: "MHS CS Club",
   viewport: "width=device-width,initial-scale=1",
-
+  description:
+    "Mckinney High School Computer Science Club, Providing Computer Science education and prep for students.",
 });
 
-export const links: LinksFunction = () => [
-  {rel:"stylesheet",href:styles}
-]
+export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 export default function App() {
   return (
