@@ -22,17 +22,17 @@ export default function Index() {
           <h1 className="text-transparent bg-clip-text text-9xl font-extrabold bg-gradient-to-br from-yellow-300 to-red-300">
             CS Club
           </h1>
-          <h2 className="text-transparent bg-clip-text text-md font-extrabold bg-gradient-to-br from-yellow-300 to-red-300">
+          <h2 className="text-transparent bg-clip-text text-xl font-extrabold bg-gradient-to-br from-yellow-300 to-red-300">
             At Mckinney High School
           </h2>
         </div>
         <div className="my-2 mb-1">
-          <h2 className="text-yellow-500 text-2xl">Quick links</h2>
+          <h2 className="text-yellow-500 text-4xl">Quick links</h2>
           <ul className="text-yellow-400">
             {links.map((link) => {
               return (
                 <li
-                  className="text-lg hover:scale-125 transition ease-in-out"
+                  className="text-2xl hover:scale-125 transition ease-in-out"
                   key={link.text}
                 >
                   <a href={link.href}>{link.text}</a>
@@ -42,7 +42,7 @@ export default function Index() {
           </ul>
         </div>
         <div className="my-2">
-          <h2 className="text-2xl text-yellow-500">About</h2>
+          <h2 className="text-4xl text-yellow-500">About</h2>
           <ul className="flex-row flex">
             <li className="p-1">
               <Link to="/about" aria-label="About Page">
