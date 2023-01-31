@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { PermissionTable } from "../../components/PermissionTable";
 import TopHomeLink from "../../components/TopHomeLink";
 import LoginButton from "../../components/UserButton";
 import { RouterOutputs, api } from "../../utils/api";
@@ -15,28 +16,37 @@ const roleDash = () => {
                         Role Management
                     </h1>
                 </div>
-                {useRoles.isSuccess &&<div>
-                    {useRoles.data.map((role)=>{
-                        return <RoleBox role={role} />                    })}
+                {useRoles.isSuccess && <div>
+                    <RoleList roles={useRoles.data} />
                 </div>}
             </div>
         </div>
-        </>
+    </>
 }
 type ArrElement<ArrType extends readonly unknown[]> =
-ArrType extends readonly (infer ElementType)[] ? ElementType : never;
+    ArrType extends readonly (infer ElementType)[] ? ElementType : never;
 
-type roleBoxProps = {
-    role: ArrElement<RouterOutputs["role"]["getAll"]>
+type Role = ArrElement<RouterOutputs["role"]["getAll"]>
+
+type roleListProps = {
+    roles: Role[]
+}
+const RoleList = ({ roles }: roleListProps) => {
+    return <div>
+        {roles.map(role => {
+            return <RoleBox key={role.id} role={role} />
+        })}
+    </div>
 }
 
-const RoleBox = ({role}:roleBoxProps) => {
+
+const RoleBox = ({ role }: { role: Role }) => {
     const [height, setHeight] = useState(0);
     const ref = useRef<HTMLDivElement>(null);
     const onShow = () => {
-        if(height === 0){
+        if (height === 0) {
             setHeight(ref.current?.getBoundingClientRect().height as number)
-        }else{
+        } else {
             setHeight(0)
         }
     }
@@ -48,35 +58,28 @@ const RoleBox = ({role}:roleBoxProps) => {
                 </h1>
                 <button className="ml-auto" onClick={onShow}> Expand</button>
             </div>
-            <div className="overflow-hidden ease-in-out transition-all" style={{height:height}}>
+            <div className="overflow-hidden ease-in-out transition-all" style={{ height: height }}>
                 <div ref={ref}>
                     <div className="flex flex-row">
                         <div className="w-1/2">
-                            <div>
-                                <h2 className="text-lg">Permissions</h2>
-                                {role.permissions.map((permission)=>{
-                                    return <div key={permission.id} className="bg-blue-800 rounded-md p-1">
-                                        <div className="text-transparent bg-clip-text bg-gradient-to-tr from-yellow-300 to-red-400">
-                                            {permission.slug}
-                                        </div>
-                                    </div>
-                                })}
+                            <div className="m-2">
+                                <PermissionTable permissions={role.permissions} />
                             </div>
                         </div>
                         <div>
                             <h2>Users</h2>
-                            {role.Users.map((user)=>{
+                            {role.Users.map((user) => {
                                 return <div key={user.id} className="bg-blue-800 rounded-md p-1">
                                     <div className="text-transparent bg-clip-text bg-gradient-to-tr from-yellow-300 to-red-400">
                                         {user.name}
                                     </div>
                                 </div>
                             })}</div>
-                    </div> 
+                    </div>
                 </div>
             </div>
         </div>
-        </>
+    </>
 }
 
 export default roleDash;
