@@ -1,5 +1,6 @@
 import { authRouter } from "./routers/auth";
 import { competitionsRouter } from "./routers/competitions";
+import { problemRouter } from "./routers/problems";
 import { roleRouter } from "./routers/role";
 import { userRouter } from "./routers/user";
 import { createTRPCRouter } from "./trpc";
@@ -13,7 +14,8 @@ export const appRouter = createTRPCRouter({
     auth:authRouter,
     competitions: competitionsRouter,
     role: roleRouter,
-    user: userRouter
+    user: userRouter,
+    problems: problemRouter
 });
 
 // export type definition of API

@@ -59,8 +59,9 @@ model User {
   accounts      Account[]
   sessions      Session[]
   competitions  UserCompetitionMap[]
-  role          Role?                 @relation(fields: [roleId], references: [id])
-  roleId        String?               
+  role          Role?                @relation(fields: [roleId], references: [id])
+  roleId        String?
+  problems      MCProblem[]
 }
 
 model Competition {
@@ -83,25 +84,52 @@ model UserCompetitionMap {
 }
 
 model Role {
-  id          String            @id @default(cuid())
+  id          String       @id @default(cuid())
   title       String?
-  slug        String @unique
+  slug        String       @unique
   description String?
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @default(now()) @updatedAt
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now()) @updatedAt
   Users       User[]
   permissions Permission[]
 }
 
 model Permission {
-  id          String            @id @default(cuid())
-  slug        String @unique
+  id          String   @id @default(cuid())
+  slug        String   @unique
   description String?
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @default(now()) @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
   roles       Role[]
 }
 
+model MCProblem {
+  id        Int      @id @default(autoincrement())
+  name      String?
+  content   Json
+  code      String?
+  answers   Answer[]
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model ProblemTag {
+  id   String @id @default(cuid())
+  slug String @unique
+  name String
+}
+
+model Answer {
+  id        String    @id @default(cuid())
+  content   Json
+  correct   Boolean
+  problemId Int
+  problem   MCProblem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  createAt  DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+}
 
 model VerificationToken {
   identifier String
