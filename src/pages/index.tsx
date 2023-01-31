@@ -1,8 +1,6 @@
 import { prisma } from "../server/db";
 import { type NextPage } from "next";
 import Link from "next/link";
-import dynamic from "next/dynamic";
-import { Suspense } from "react";
 import LoginButton from "../components/UserButton";
 type HomeLink = {
   href: string;
