@@ -13,18 +13,24 @@ type Problem = RouterInputs["problems"]["create"];
 
 const Create = () => {
   const router = useRouter();
-  const { register, handleSubmit, control, formState } = useForm<Problem>({
-    resolver: zodResolver(createProblemSchema),
-    defaultValues: {
-      name: "",
-      content: "",
-      code: "",
-      answers: [],
-    },
-  });
+  const { register, handleSubmit, control, formState, reset } =
+    useForm<Problem>({
+      resolver: zodResolver(createProblemSchema),
+      defaultValues: {
+        name: "",
+        content: "",
+        code: "",
+        answers: [],
+      },
+    });
   const createProblem = api.problems.create.useMutation({
     onSuccess: (data) => {
-      router.push(`/problems/view/${data.id}`);
+      reset({
+        name: "",
+        content: "",
+        code: "",
+        answers: [],
+      });
     },
   });
   const onSubmit: SubmitHandler<Problem> = (data) => {
@@ -55,7 +61,10 @@ const Create = () => {
                     control={control}
                     rules={{ required: true }}
                     render={({ field }) => (
-                      <TipTap stateCallback={field.onChange} />
+                      <TipTap
+                        content={field.value}
+                        stateCallback={field.onChange}
+                      />
                     )}
                   />
                 </div>
@@ -65,7 +74,10 @@ const Create = () => {
                     control={control}
                     rules={{ required: false }}
                     render={({ field }) => (
-                      <CodeEditor stateCallback={field.onChange} />
+                      <CodeEditor
+                        content={field.value ?? ""}
+                        stateCallback={field.onChange}
+                      />
                     )}
                   />
                 </div>
@@ -75,7 +87,10 @@ const Create = () => {
                     control={control}
                     rules={{ required: true }}
                     render={({ field }) => (
-                      <MCAnswerEdit onChange={field.onChange} />
+                      <MCAnswerEdit
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
                     )}
                   />
                 </div>

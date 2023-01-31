@@ -5,41 +5,26 @@ import Subscript from "@tiptap/extension-subscript";
 import Superscript from "@tiptap/extension-superscript";
 import Text from "@tiptap/extension-text";
 import Underline from "@tiptap/extension-underline";
-import type {
-  Editor,
-  JSONContent
-} from "@tiptap/react";
-import {
-  Content,
-  EditorContent,
-  useEditor,
-} from "@tiptap/react";
+import type { Editor, JSONContent } from "@tiptap/react";
+import { Content, EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { lowlight } from "lowlight/lib/core";
 import java from "highlight.js/lib/languages/java";
 import javascript from "highlight.js/lib/languages/javascript";
-import "highlight.js/styles/github.css"
+import "highlight.js/styles/github.css";
 
-lowlight.registerLanguage("java", java)
-lowlight.registerLanguage("js", javascript)
+lowlight.registerLanguage("java", java);
+lowlight.registerLanguage("js", javascript);
 
-
-import {
-  Dispatch,
-  FocusEvent,
-  SetStateAction,
-  useEffect
-} from "react";
-import {
-  useState,
-} from "react";
+import { Dispatch, FocusEvent, SetStateAction, useEffect } from "react";
+import { useState } from "react";
 const MenuBar = ({ editor }: { editor: Editor | null }) => {
   if (!editor) {
     return null;
   }
   return (
-    <div className="container flex mx-auto">
-      <div className="m-1 p-1 bg-slate-400 rounded-lg flex align-middle">
+    <div className="container mx-auto flex">
+      <div className="m-1 flex rounded-lg bg-slate-400 p-1 align-middle">
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleBold().run()}
@@ -111,7 +96,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
           </svg>
         </button>
       </div>
-      <div className="m-1 p-1 bg-slate-400 rounded-lg flex align-middle">
+      <div className="m-1 flex rounded-lg bg-slate-400 p-1 align-middle">
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleCode().run()}
@@ -147,7 +132,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
           </svg>
         </button>
       </div>
-      <div className="m-1 p-1 bg-slate-400 rounded-lg flex align-middle">
+      <div className="m-1 flex rounded-lg bg-slate-400 p-1 align-middle">
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleSubscript().run()}
@@ -189,20 +174,29 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
   );
 };
 
-const TipTap = ({ content: initialContent, stateCallback, editable }: editorProps) => {
+const TipTap = ({ content, stateCallback, editable }: editorProps) => {
   const editor = useEditor({
     extensions: [StarterKit, Underline, Subscript, Superscript],
-    content: initialContent ?? "",
     onUpdate: ({ editor }) => {
       stateCallback ? stateCallback(JSON.stringify(editor.getJSON())) : null;
     },
   });
   useEffect(() => {
     editor?.setEditable(editable ?? true);
-  }, [editable, editor])
+  }, [editable, editor]);
+  useEffect(() => {
+    if (isJSON(content ?? "")) {
+      editor?.commands?.setContent(content ?? "");
+    }
+  }, [content, editor]);
   return (
     <div className="group">
-      <div className={"relative invisible" + (editable ? " group-focus-within:visible" : "")}>
+      <div
+        className={
+          "invisible relative" +
+          (editable ?? true ? " group-focus-within:visible" : "")
+        }
+      >
         <div className="absolute -top-10">
           <MenuBar editor={editor} />
         </div>
@@ -214,31 +208,42 @@ const TipTap = ({ content: initialContent, stateCallback, editable }: editorProp
 
 export default TipTap;
 
-export function CodeEditor({ content: initialContent, stateCallback, editable }: editorProps) {
+export function CodeEditor({ content, stateCallback, editable }: editorProps) {
   const editor = useEditor({
-    content: initialContent ?? "",
-    extensions: [CodeBlockLowlight.configure({ lowlight }), Document, Text, Paragraph],
+    extensions: [
+      CodeBlockLowlight.configure({ lowlight }),
+      Document,
+      Text,
+      Paragraph,
+    ],
     onUpdate: ({ editor }) => {
       stateCallback ? stateCallback(JSON.stringify(editor.getJSON())) : null;
     },
-    onCreate: (({ editor }) => { initialContent ? null : editor?.commands.toggleCodeBlock() }),
+    onCreate: ({ editor }) => {
+      content ? null : editor?.commands.toggleCodeBlock();
+    },
     editorProps: {
       attributes: {
-        class: "bg-white"
-      }
-    }
+        class: "bg-white",
+      },
+    },
   });
   useEffect(() => {
     editor?.setEditable(editable ?? true);
-  }, [editable, editor])
-  return <EditorContent editor={editor} />
-
+  }, [editable, editor]);
+  useEffect(() => {
+    if (isJSON(content ?? "")) {
+      editor?.commands?.setContent(content ?? "");
+    }
+  }, [content, editor]);
+  return <EditorContent editor={editor} />;
 }
-
 
 interface editorProps {
-  content?: string;
-  stateCallback?: Dispatch<SetStateAction<string>>
+  content?: string | JSONContent;
+  stateCallback?: Dispatch<SetStateAction<string>>;
   editable?: boolean;
 }
-
+function isJSON(content: string | JSONContent): content is JSONContent {
+  return (content as JSONContent).content !== undefined;
+}
