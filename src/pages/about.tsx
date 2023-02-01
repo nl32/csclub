@@ -1,4 +1,4 @@
-import TopHomeLink from "../components/TopHomeLink";
+import TopHomeLink from "../components/BackLink";
 
 export default function About() {
   return (

@@ -1,6 +1,6 @@
 import type { SubmitHandler } from "react-hook-form";
 import { useForm, Controller } from "react-hook-form";
-import TopHomeLink from "../../components/TopHomeLink";
+import TopHomeLink from "../../components/BackLink";
 import type { RouterInputs } from "../../utils/api";
 import { api } from "../../utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";

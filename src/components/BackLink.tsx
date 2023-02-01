@@ -1,9 +1,12 @@
 import Link from "next/link";
 
-export default function TopHomeLink() {
+type BackLinkProps = {
+  href?: string;
+};
+export default function BackLink({ href }: BackLinkProps) {
   return (
     <div className=" absolute top-2 left-2 transition-all hover:scale-125">
-      <Link href="/">
+      <Link href={href ?? "/"}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
