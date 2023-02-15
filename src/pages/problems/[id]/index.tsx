@@ -16,7 +16,7 @@ const ProblemPage = () => {
   return (
     <>
       <div className="h-screen w-screen bg-blue-800">
-        <BackLink href="/problems/view" />
+        <BackLink href="/problems/" />
         <div className="flex flex-col justify-center pt-20 text-left">
           {problemQuery.isFetched && (
             <>

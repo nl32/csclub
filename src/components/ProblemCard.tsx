@@ -1,24 +1,37 @@
-import { Answer, MCProblem } from "@prisma/client"
-import Link from "next/link"
-import { RouterOutputs } from "../utils/api"
-import TipTap from "./TipTap"
+import { Answer, MCProblem } from "@prisma/client";
+import Link from "next/link";
+import { api, RouterOutputs } from "../utils/api";
+import TipTap from "./TipTap";
 
 type ProblemCardProps = {
-    problem: MCProblem & { answers: Answer[] }
-}
+  problem: MCProblem & { answers: Answer[] };
+};
 
 const ProblemCard = ({ problem }: ProblemCardProps) => {
-
-    return <>
-        <Link href={{ pathname: "/problems/view/[id]", query: { id: problem.id } }}>
-            <div className="bg-white p-2 w-80 rounded-md drop-shadow-md hover:scale-110  transition-transform ease-in-out">
-                {problem.name && <h1 className="w-full border-black border-b">{problem.name}</h1>}
-                <div className="text-lg">
-                    <TipTap content={JSON.parse(problem.content as string)} editable={false} />
-                </div>
-            </div>
-        </Link>
+  const utils = api.useContext();
+  const preFetch = () => {
+    utils.problems.get.prefetch({ id: problem.id });
+  };
+  return (
+    <>
+      <Link
+        href={{ pathname: "/problems/[id]", query: { id: problem.id } }}
+        onMouseOver={preFetch}
+      >
+        <div className="w-80 rounded-md bg-white p-2 drop-shadow-md transition-transform  ease-in-out hover:scale-110">
+          {problem.name && (
+            <h1 className="w-full border-b border-black">{problem.name}</h1>
+          )}
+          <div className="text-lg">
+            <TipTap
+              content={JSON.parse(problem.content as string)}
+              editable={false}
+            />
+          </div>
+        </div>
+      </Link>
     </>
-}
+  );
+};
 
-export default ProblemCard
+export default ProblemCard;

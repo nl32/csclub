@@ -1,7 +1,7 @@
 import { useState } from "react";
-import ProblemCard from "../../../components/ProblemCard";
-import TopHomeLink from "../../../components/BackLink";
-import { api } from "../../../utils/api";
+import ProblemCard from "../../components/ProblemCard";
+import TopHomeLink from "../../components/BackLink";
+import { api } from "../../utils/api";
 
 const View = () => {
   const problemQuery = api.problems.getInfinite.useInfiniteQuery(
