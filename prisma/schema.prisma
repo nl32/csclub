@@ -107,7 +107,7 @@ model MCProblem {
   id        Int      @id @default(autoincrement())
   name      String?
   content   Json
-  code      String?
+  code      Json?
   answers   Answer[]
   authorId  String
   author    User     @relation(fields: [authorId], references: [id])
