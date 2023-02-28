@@ -1,3 +1,4 @@
+import { JSONContent } from "@tiptap/core";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import type { Dispatch, SetStateAction } from "react";
@@ -30,7 +31,7 @@ const ProblemPage = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="h-full rounded-md bg-white p-2 text-lg">
                     <TipTap
-                      content={JSON.parse(problemQuery.data?.content as string)}
+                      content={problemQuery.data?.content as JSONContent}
                       editable={editable}
                     />
                     <div>
@@ -42,7 +43,7 @@ const ProblemPage = () => {
                             </div>
                             <div>
                               <TipTap
-                                content={JSON.parse(answer.content as string)}
+                                content={answer.content as JSONContent}
                                 editable={editable}
                               />
                             </div>
@@ -54,7 +55,7 @@ const ProblemPage = () => {
                   {problemQuery.data?.code && (
                     <div className="h-full rounded-md bg-white p-2">
                       <CodeEditor
-                        content={JSON.parse(problemQuery.data?.code as string)}
+                        content={problemQuery.data?.code as JSONContent}
                         editable={editable}
                       />
                     </div>
@@ -74,17 +75,16 @@ type ActionBarProps = {
   setEditable: Dispatch<SetStateAction<boolean>>;
 };
 const ActionBar = ({ editable, setEditable }: ActionBarProps) => {
+  const router = useRouter();
+  const { id } = router.query;
   return (
     <div className="mb-2 rounded-md bg-white p-1">
-      <button
-        type="button"
+      <Link
+        href={{ pathname: "/problems/[id]/edit", query: { id: id } }}
         className="rounded-md bg-gradient-to-br from-yellow-300 to-red-300 p-1 hover:to-red-500 active:from-yellow-500"
-        onClick={() => {
-          setEditable(!editable);
-        }}
       >
         Edit
-      </button>
+      </Link>
     </div>
   );
 };

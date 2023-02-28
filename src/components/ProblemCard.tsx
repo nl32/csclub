@@ -1,4 +1,5 @@
 import { Answer, MCProblem } from "@prisma/client";
+import { JSONContent } from "@tiptap/core";
 import Link from "next/link";
 import { api, RouterOutputs } from "../utils/api";
 import TipTap from "./TipTap";
@@ -23,10 +24,7 @@ const ProblemCard = ({ problem }: ProblemCardProps) => {
             <h1 className="w-full border-b border-black">{problem.name}</h1>
           )}
           <div className="text-lg">
-            <TipTap
-              content={JSON.parse(problem.content as string)}
-              editable={false}
-            />
+            <TipTap content={problem.content as JSONContent} editable={false} />
           </div>
         </div>
       </Link>

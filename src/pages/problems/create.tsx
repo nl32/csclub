@@ -8,6 +8,7 @@ import { createProblemSchema } from "../../utils/schemas";
 import TipTap, { CodeEditor } from "../../components/TipTap";
 import MCAnswerEdit from "../../components/MCAnswerEdit";
 import { useRouter } from "next/router";
+import { JSONContent } from "@tiptap/core";
 
 type Problem = RouterInputs["problems"]["create"];
 
@@ -17,22 +18,14 @@ const Create = () => {
     useForm<Problem>({
       resolver: zodResolver(createProblemSchema),
       defaultValues: {
-        name: "",
-        content: "",
-        code: "",
-        answers: [],
+        answers: [
+          {
+            correct: true,
+          },
+        ],
       },
     });
-  const createProblem = api.problems.create.useMutation({
-    onSuccess: (data) => {
-      reset({
-        name: "",
-        content: "",
-        code: "",
-        answers: [],
-      });
-    },
-  });
+  const createProblem = api.problems.create.useMutation({});
   const onSubmit: SubmitHandler<Problem> = (data) => {
     createProblem.mutate(data);
   };
@@ -62,7 +55,7 @@ const Create = () => {
                     rules={{ required: true }}
                     render={({ field }) => (
                       <TipTap
-                        content={field.value}
+                        content={field.value as JSONContent}
                         stateCallback={field.onChange}
                       />
                     )}
@@ -75,7 +68,7 @@ const Create = () => {
                     rules={{ required: false }}
                     render={({ field }) => (
                       <CodeEditor
-                        content={field.value ?? ""}
+                        content={field.value as JSONContent}
                         stateCallback={field.onChange}
                       />
                     )}
@@ -88,7 +81,12 @@ const Create = () => {
                     rules={{ required: true }}
                     render={({ field }) => (
                       <MCAnswerEdit
-                        value={field.value}
+                        value={
+                          field.value as Array<{
+                            content: JSONContent;
+                            correct: boolean;
+                          }>
+                        }
                         onChange={field.onChange}
                       />
                     )}

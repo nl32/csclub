@@ -178,7 +178,7 @@ const TipTap = ({ content, stateCallback, editable }: editorProps) => {
   const editor = useEditor({
     extensions: [StarterKit, Underline, Subscript, Superscript],
     onUpdate: ({ editor }) => {
-      stateCallback ? stateCallback(JSON.stringify(editor.getJSON())) : null;
+      stateCallback ? stateCallback(editor.getJSON()) : null;
     },
   });
   useEffect(() => {
@@ -217,7 +217,7 @@ export function CodeEditor({ content, stateCallback, editable }: editorProps) {
       Paragraph,
     ],
     onUpdate: ({ editor }) => {
-      stateCallback ? stateCallback(JSON.stringify(editor.getJSON())) : null;
+      stateCallback ? stateCallback(editor.getJSON()) : null;
     },
     onCreate: ({ editor }) => {
       content ? null : editor?.commands.toggleCodeBlock();
@@ -240,8 +240,8 @@ export function CodeEditor({ content, stateCallback, editable }: editorProps) {
 }
 
 interface editorProps {
-  content?: string | JSONContent;
-  stateCallback?: Dispatch<SetStateAction<string>>;
+  content?: JSONContent;
+  stateCallback?: Dispatch<SetStateAction<JSONContent>>;
   editable?: boolean;
 }
 function isJSON(content: string | JSONContent): content is JSONContent {

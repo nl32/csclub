@@ -6,11 +6,12 @@ import {
   useReactTable,
   getCoreRowModel,
 } from "@tanstack/react-table";
+import { JSONContent } from "@tiptap/core";
 import { useEffect, useMemo, useState } from "react";
 import TipTap from "./TipTap";
 
 type Answer = {
-  content: string;
+  content: JSONContent;
   correct: boolean;
 };
 
@@ -58,7 +59,7 @@ const MCAnswerEdit = ({
         id: "Remove",
         header: (info) => {
           const onClick = () => {
-            info.table.options.meta?.addData({ content: "", correct: false });
+            info.table.options.meta?.addData({ content: {}, correct: false });
           };
           return (
             <button
@@ -198,7 +199,11 @@ const MCAnswerEdit = ({
   );
 };
 
-const AnswerContentBox = ({ info }: { info: CellContext<Answer, string> }) => {
+const AnswerContentBox = ({
+  info,
+}: {
+  info: CellContext<Answer, JSONContent>;
+}) => {
   const initialValue = info.getValue();
   const [content, setContent] = useState(initialValue);
   useEffect(() => {
@@ -211,7 +216,7 @@ const AnswerContentBox = ({ info }: { info: CellContext<Answer, string> }) => {
       content
     );
   }, [content]);
-  return <TipTap stateCallback={setContent} />;
+  return <TipTap content={content} stateCallback={setContent} />;
 };
 const AnswerCorrect = ({ info }: { info: CellContext<Answer, boolean> }) => {
   const initialValue = info.getValue();
